@@ -1,0 +1,1134 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap");
+@import "tailwindcss";
+
+/* ── Tailwind v4 class-based dark mode ── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --background: #f0f8ff;
+    --foreground: #4b5563;
+    --heading: #374151;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --nav-bg: rgba(255, 255, 255, 0.6);
+    --border-light: rgba(255, 255, 255, 0.5);
+    --mood-badge-bg: var(--mood-bg, #fff7ed);
+    --caption: #374151;
+}
+
+.dark {
+    --background: #0a0e1a;
+    --foreground: #cbd5e1;
+    --heading: #e2e8f0;
+    --card-bg: rgba(30, 41, 59, 0.75);
+    --nav-bg: rgba(15, 23, 42, 0.8);
+    --border-light: rgba(148, 163, 184, 0.12);
+    --mood-badge-bg: rgba(30, 41, 59, 0.9);
+    --caption: #e2e8f0;
+}
+
+/* ── Swirling CD background ── */
+@keyframes bg-swirl {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.04);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition:
+        background 0.4s ease,
+        color 0.4s ease;
+}
+
+/* Giant slow-swirling conic gradient behind everything */
+body::before {
+    content: "";
+    position: fixed;
+    inset: -80%;
+    width: 260%;
+    height: 260%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(137, 207, 240, 0.04) 0deg,
+        rgba(195, 177, 225, 0.03) 90deg,
+        rgba(181, 234, 215, 0.04) 180deg,
+        rgba(135, 206, 235, 0.02) 270deg,
+        rgba(137, 207, 240, 0.04) 360deg
+    );
+    animation: bg-swirl 120s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Secondary inward swirl for depth */
+body::after {
+    content: "";
+    position: fixed;
+    inset: -40%;
+    width: 180%;
+    height: 180%;
+    background:
+        radial-gradient(
+            ellipse at 30% 40%,
+            rgba(255, 255, 255, 0.15) 0%,
+            transparent 50%
+        ),
+        conic-gradient(
+            from 180deg at 70% 60%,
+            rgba(195, 177, 225, 0.03) 0deg,
+            transparent 180deg,
+            rgba(137, 207, 240, 0.03) 360deg
+        );
+    animation: bg-swirl 90s linear infinite reverse;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   7 MOOD STYLES — halftone dot pattern overlays, photos visible
+   ════════════════════════════════════════════════════════════════ */
+
+/* Base: photos show through normally (no B&W). Transition for hover. */
+.mood-figure figure img,
+.mood-figure figure > div {
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
+}
+
+/* ── 1. Dreamy — warm amber halftone ── */
+.mood-dreamy .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(245, 158, 11, 0.28) 0px,
+            rgba(245, 158, 11, 0.28) 1.5px,
+            transparent 1.5px,
+            transparent 6px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(245, 158, 11, 0.08),
+            rgba(245, 158, 11, 0.02)
+        );
+    background-size:
+        8px 8px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-dreamy {
+    --mood-accent: #f59e0b;
+    --mood-border: #3b82f680;
+    --mood-bg: #fff7ed;
+    --mood-text: #c2410c;
+    --mood-shadow: rgba(245, 158, 11, 0.12);
+}
+
+/* ── 2. Neon — hot pink halftone ── */
+.mood-neon .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(236, 72, 153, 0.28) 0px,
+            rgba(236, 72, 153, 0.28) 2px,
+            transparent 2px,
+            transparent 7px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(236, 72, 153, 0.08),
+            rgba(236, 72, 153, 0.02)
+        );
+    background-size:
+        9px 9px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-neon {
+    --mood-accent: #ec4899;
+    --mood-border: #14b8a680;
+    --mood-bg: #fdf2f8;
+    --mood-text: #be185d;
+    --mood-shadow: rgba(236, 72, 153, 0.12);
+}
+
+/* ── 3. Vintage — deep rust halftone ── */
+.mood-vintage .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(180, 83, 9, 0.28) 0px,
+            rgba(180, 83, 9, 0.28) 1.2px,
+            transparent 1.2px,
+            transparent 5px
+        ),
+        linear-gradient(135deg, rgba(180, 83, 9, 0.08), rgba(180, 83, 9, 0.02));
+    background-size:
+        7px 7px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-vintage {
+    --mood-accent: #92400e;
+    --mood-border: #0284c780;
+    --mood-bg: #fef3c7;
+    --mood-text: #78350f;
+    --mood-shadow: rgba(146, 64, 14, 0.12);
+}
+
+/* ── 4. Noir — black halftone (pure dot screen) ── */
+.mood-noir .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(55, 65, 81, 0.25) 0px,
+            rgba(55, 65, 81, 0.25) 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        linear-gradient(135deg, rgba(55, 65, 81, 0.06), rgba(55, 65, 81, 0.01));
+    background-size:
+        6px 6px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-noir {
+    --mood-accent: #374151;
+    --mood-border: #37415180;
+    --mood-bg: #f3f4f6;
+    --mood-text: #111827;
+    --mood-shadow: rgba(55, 65, 81, 0.12);
+}
+
+/* ── 5. Ethereal — soft purple halftone ── */
+.mood-ethereal .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(139, 92, 246, 0.25) 0px,
+            rgba(139, 92, 246, 0.25) 1.8px,
+            transparent 1.8px,
+            transparent 7px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.08),
+            rgba(139, 92, 246, 0.02)
+        );
+    background-size:
+        10px 10px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-ethereal {
+    --mood-accent: #8b5cf6;
+    --mood-border: #f59e0b80;
+    --mood-bg: #f5f3ff;
+    --mood-text: #6d28d9;
+    --mood-shadow: rgba(139, 92, 246, 0.12);
+}
+
+/* ── 6. Gritty — dark olive halftone ── */
+.mood-gritty .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(68, 64, 60, 0.25) 0px,
+            rgba(68, 64, 60, 0.25) 1.2px,
+            transparent 1.2px,
+            transparent 4px
+        ),
+        linear-gradient(135deg, rgba(68, 64, 60, 0.08), rgba(68, 64, 60, 0.02));
+    background-size:
+        6px 6px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-gritty {
+    --mood-accent: #57534e;
+    --mood-border: #d946ef80;
+    --mood-bg: #fafaf9;
+    --mood-text: #292524;
+    --mood-shadow: rgba(87, 83, 78, 0.12);
+}
+
+/* ── 7. Chrome — ice blue halftone ── */
+.mood-chrome .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(14, 165, 233, 0.25) 0px,
+            rgba(14, 165, 233, 0.25) 1.5px,
+            transparent 1.5px,
+            transparent 6px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(14, 165, 233, 0.08),
+            rgba(14, 165, 233, 0.02)
+        );
+    background-size:
+        8px 8px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-chrome {
+    --mood-accent: #0ea5e9;
+    --mood-border: #f9731680;
+    --mood-bg: #f0f9ff;
+    --mood-text: #0369a1;
+    --mood-shadow: rgba(14, 165, 233, 0.12);
+}
+
+/* ════════════════════════════════════════════════════════════
+   7 SPECIAL MOOD STYLES — halftone dot patterns
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 1. Comic — bright red halftone ── */
+.mood-comic .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(239, 68, 68, 0.28) 0px,
+            rgba(239, 68, 68, 0.28) 2px,
+            transparent 2px,
+            transparent 7px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(239, 68, 68, 0.08),
+            rgba(239, 68, 68, 0.02)
+        );
+    background-size:
+        9px 9px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-comic {
+    --mood-accent: #ef4444;
+    --mood-border: #22c55e80;
+    --mood-bg: #fef2f2;
+    --mood-text: #dc2626;
+    --mood-shadow: rgba(239, 68, 68, 0.15);
+}
+
+/* ── 2. Blurred — cool lavender halftone ── */
+.mood-blurred .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(165, 180, 252, 0.22) 0px,
+            rgba(165, 180, 252, 0.22) 2.2px,
+            transparent 2.2px,
+            transparent 8px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(165, 180, 252, 0.06),
+            rgba(165, 180, 252, 0.02)
+        );
+    background-size:
+        10px 10px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-blurred {
+    --mood-accent: #a5b4fc;
+    --mood-border: #f59e0b80;
+    --mood-bg: #eef2ff;
+    --mood-text: #6366f1;
+    --mood-shadow: rgba(165, 180, 252, 0.15);
+}
+
+/* ── 3. Terminal — green CRT halftone ── */
+.mood-terminal .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(34, 197, 94, 0.28) 0px,
+            rgba(34, 197, 94, 0.28) 1.5px,
+            transparent 1.5px,
+            transparent 6px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(34, 197, 94, 0.08),
+            rgba(34, 197, 94, 0.02)
+        );
+    background-size:
+        8px 8px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-terminal {
+    --mood-accent: #22c55e;
+    --mood-border: #ef444480;
+    --mood-bg: #f0fdf4;
+    --mood-text: #15803d;
+    --mood-shadow: rgba(34, 197, 94, 0.15);
+}
+
+/* ── 4. Pixel — royal blue halftone ── */
+.mood-pixel .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(59, 130, 246, 0.28) 0px,
+            rgba(59, 130, 246, 0.28) 1.8px,
+            transparent 1.8px,
+            transparent 6px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(59, 130, 246, 0.08),
+            rgba(59, 130, 246, 0.02)
+        );
+    background-size:
+        8px 8px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-pixel {
+    --mood-accent: #3b82f6;
+    --mood-border: #facc1580;
+    --mood-bg: #eff6ff;
+    --mood-text: #1d4ed8;
+    --mood-shadow: rgba(59, 130, 246, 0.15);
+}
+
+/* ── 5. Glitch — deep purple halftone ── */
+.mood-glitch .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(168, 85, 247, 0.28) 0px,
+            rgba(168, 85, 247, 0.28) 1.5px,
+            transparent 1.5px,
+            transparent 5px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.08),
+            rgba(168, 85, 247, 0.02)
+        );
+    background-size:
+        7px 7px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-glitch {
+    --mood-accent: #a855f7;
+    --mood-border: #22c55e80;
+    --mood-bg: #faf5ff;
+    --mood-text: #7e22ce;
+    --mood-shadow: rgba(168, 85, 247, 0.15);
+}
+
+/* ── 6. VHS — deep rose halftone ── */
+.mood-vhs .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(225, 29, 72, 0.25) 0px,
+            rgba(225, 29, 72, 0.25) 1.5px,
+            transparent 1.5px,
+            transparent 5px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(225, 29, 72, 0.08),
+            rgba(225, 29, 72, 0.02)
+        );
+    background-size:
+        7px 7px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-vhs {
+    --mood-accent: #e11d48;
+    --mood-border: #0ea5e980;
+    --mood-bg: #fff1f2;
+    --mood-text: #be123c;
+    --mood-shadow: rgba(225, 29, 72, 0.15);
+}
+
+/* ── 7. Watercolor — teal halftone ── */
+.mood-watercolor .mood-overlay {
+    background-image:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(20, 184, 166, 0.25) 0px,
+            rgba(20, 184, 166, 0.25) 2px,
+            transparent 2px,
+            transparent 8px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(20, 184, 166, 0.06),
+            rgba(20, 184, 166, 0.02)
+        );
+    background-size:
+        10px 10px,
+        100% 100%;
+    mix-blend-mode: multiply;
+}
+.mood-watercolor {
+    --mood-accent: #14b8a6;
+    --mood-border: #f43f5e80;
+    --mood-bg: #f0fdfa;
+    --mood-text: #0f766e;
+    --mood-shadow: rgba(20, 184, 166, 0.15);
+}
+
+/* ── Mood figure wrapper ── */
+.mood-figure {
+    overflow: hidden;
+    position: relative;
+}
+.mood-figure img,
+.mood-figure figure > div {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.mood-figure .mood-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    transition: opacity 0.5s ease;
+}
+
+/* ════════════════════════════════════════════════
+   PHOTO STACK — wider spacing, dramatic hover expand
+   ════════════════════════════════════════════════ */
+
+.photo-stack {
+    position: relative;
+    width: 170px;
+    height: 155px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.photo-stack__item {
+    position: absolute;
+    width: 130px;
+    height: 110px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    transition:
+        transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.45s ease;
+}
+
+/* Default compact stack */
+.photo-stack__item--back {
+    transform: rotate(-8deg) translateX(-18px) translateY(-6px);
+    z-index: 1;
+}
+.photo-stack__item--middle {
+    transform: rotate(5deg) translateX(10px) translateY(4px);
+    z-index: 2;
+}
+.photo-stack__item--front {
+    transform: rotate(-1deg) translateX(-2px) translateY(-1px);
+    z-index: 3;
+}
+
+/* On hover: fan out so all three are clearly visible */
+.mood-card:hover .photo-stack__item--back {
+    transform: rotate(-14deg) translateX(-48px) translateY(-14px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+.mood-card:hover .photo-stack__item--middle {
+    transform: rotate(10deg) translateX(42px) translateY(10px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+.mood-card:hover .photo-stack__item--front {
+    transform: rotate(-2deg) translateX(-4px) translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Mood badge (pill) ── */
+.mood-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1.5px solid var(--mood-border);
+    background: var(--mood-bg);
+    color: var(--mood-text);
+}
+
+/* ── Mood card — shadow uses the mood accent colour ── */
+.mood-card {
+    box-shadow: 0 2px 12px rgba(135, 206, 235, 0.06);
+    transition: all 0.3s ease;
+    border-width: 2px;
+}
+.mood-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 20px 48px var(--mood-shadow, rgba(135, 206, 235, 0.18));
+}
+
+/* ════════════════════════════════════════════════
+   ROUND CLOUD BLOBS — high contrast, very slow, scattered
+   ════════════════════════════════════════════════ */
+
+@keyframes blob-float-1 {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    25% {
+        transform: translate(140px, -90px) scale(1.08) rotate(3deg);
+    }
+    50% {
+        transform: translate(-90px, 110px) scale(0.92) rotate(-2deg);
+    }
+    75% {
+        transform: translate(100px, 70px) scale(1.04) rotate(1.5deg);
+    }
+}
+@keyframes blob-float-2 {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    33% {
+        transform: translate(-150px, 80px) scale(1.12) rotate(-4deg);
+    }
+    66% {
+        transform: translate(120px, -120px) scale(0.88) rotate(3deg);
+    }
+}
+@keyframes blob-float-3 {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    20% {
+        transform: translate(100px, 90px) scale(1.1);
+    }
+    40% {
+        transform: translate(-110px, -70px) scale(0.9);
+    }
+    60% {
+        transform: translate(140px, 60px) scale(1.06);
+    }
+    80% {
+        transform: translate(-80px, -100px) scale(0.94);
+    }
+}
+@keyframes blob-float-4 {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-120px, -140px) scale(1.16) rotate(-4deg);
+    }
+}
+@keyframes blob-float-5 {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    30% {
+        transform: translate(110px, -90px) scale(0.9);
+    }
+    60% {
+        transform: translate(-90px, 120px) scale(1.12);
+    }
+}
+
+.blob {
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+/* Smaller, higher-contrast blobs — sharp centre, rapid falloff at edges */
+.blob-1 {
+    width: 360px;
+    height: 280px;
+    border-radius: 50%;
+    animation: blob-float-1 85s ease-in-out infinite;
+    background: radial-gradient(
+        circle at 35% 40%,
+        rgba(147, 51, 234, 0.92) 0%,
+        rgba(147, 51, 234, 0.85) 35%,
+        rgba(168, 85, 247, 0.7) 50%,
+        rgba(192, 132, 252, 0.35) 65%,
+        rgba(192, 132, 252, 0.08) 78%,
+        transparent 82%
+    );
+    filter: blur(40px);
+}
+
+.blob-2 {
+    width: 320px;
+    height: 260px;
+    border-radius: 50%;
+    animation: blob-float-2 90s ease-in-out infinite;
+    animation-delay: -12s;
+    background: radial-gradient(
+        circle at 45% 30%,
+        rgba(34, 197, 94, 0.88) 0%,
+        rgba(34, 197, 94, 0.8) 35%,
+        rgba(74, 222, 128, 0.65) 50%,
+        rgba(134, 239, 172, 0.3) 65%,
+        rgba(134, 239, 172, 0.06) 78%,
+        transparent 82%
+    );
+    filter: blur(38px);
+}
+
+.blob-3 {
+    width: 400px;
+    height: 260px;
+    border-radius: 50%;
+    animation: blob-float-3 95s ease-in-out infinite;
+    animation-delay: -25s;
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            rgba(14, 165, 233, 0.9) 0%,
+            rgba(14, 165, 233, 0.82) 35%,
+            rgba(56, 189, 248, 0.68) 50%,
+            rgba(125, 211, 252, 0.32) 65%,
+            rgba(125, 211, 252, 0.06) 78%,
+            transparent 82%
+        ),
+        radial-gradient(
+            circle at 60% 65%,
+            rgba(2, 132, 199, 0.3) 0%,
+            transparent 45%
+        );
+    filter: blur(45px);
+}
+
+.blob-4 {
+    width: 300px;
+    height: 240px;
+    border-radius: 50%;
+    animation: blob-float-4 80s ease-in-out infinite;
+    animation-delay: -8s;
+    background:
+        radial-gradient(
+            circle at 40% 35%,
+            rgba(148, 163, 184, 0.82) 0%,
+            rgba(148, 163, 184, 0.72) 35%,
+            rgba(203, 213, 225, 0.55) 50%,
+            rgba(226, 232, 240, 0.25) 65%,
+            transparent 82%
+        ),
+        radial-gradient(
+            circle at 55% 60%,
+            rgba(255, 255, 255, 0.6) 0%,
+            transparent 50%
+        );
+    filter: blur(32px);
+}
+
+.blob-5 {
+    width: 340px;
+    height: 250px;
+    border-radius: 50%;
+    animation: blob-float-5 88s ease-in-out infinite;
+    animation-delay: -18s;
+    background:
+        radial-gradient(
+            circle at 40% 30%,
+            rgba(139, 92, 246, 0.9) 0%,
+            rgba(139, 92, 246, 0.82) 35%,
+            rgba(167, 139, 250, 0.68) 50%,
+            rgba(59, 130, 246, 0.3) 65%,
+            transparent 82%
+        ),
+        radial-gradient(
+            circle at 55% 60%,
+            rgba(99, 102, 241, 0.3) 0%,
+            transparent 45%
+        );
+    filter: blur(42px);
+}
+
+/* ════════════════════════════════════════════════
+   COMIC GRID LAYOUT — varied panel sizes, still a grid
+   ════════════════════════════════════════════════ */
+
+.comic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+}
+
+/* Default panel: 1×1 */
+.comic-panel {
+    break-inside: avoid;
+    /* Default: span 1 column, 1 row — handled by auto-placement */
+}
+
+/* Wide: spans 2 columns */
+.comic-panel--wide {
+    grid-column: span 2;
+}
+
+/* Tall: spans 2 rows (approximate — works with auto-flow dense) */
+.comic-panel--tall {
+    grid-row: span 2;
+}
+
+/* Large: spans 2 cols × 2 rows */
+.comic-panel--large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+/* Mega: spans 3 columns */
+.comic-panel--mega {
+    grid-column: span 3;
+}
+
+@media (max-width: 1024px) {
+    .comic-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .comic-panel--wide {
+        grid-column: span 2;
+    }
+    .comic-panel--large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+    .comic-panel--mega {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .comic-grid {
+        grid-template-columns: 1fr;
+        gap: 0.875rem;
+    }
+    .comic-panel--wide,
+    .comic-panel--large,
+    .comic-panel--mega {
+        grid-column: 1;
+        grid-row: auto;
+    }
+}
+
+/* ════════════════════════════════════════════════
+   CD IRIDESCENCE — back-of-a-CD rainbow shimmer
+   ════════════════════════════════════════════════ */
+
+@keyframes iridescent-shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.iridescent {
+    background: linear-gradient(
+        135deg,
+        rgba(137, 207, 240, 0.35),
+        rgba(195, 177, 225, 0.35),
+        rgba(181, 234, 215, 0.35),
+        rgba(135, 206, 235, 0.35),
+        rgba(195, 177, 225, 0.35),
+        rgba(137, 207, 240, 0.35)
+    );
+    background-size: 300% 300%;
+    animation: iridescent-shimmer 8s ease-in-out infinite;
+}
+
+.chrome-text {
+    background: linear-gradient(
+        135deg,
+        #89cff0 0%,
+        #c3b1e1 30%,
+        #b5ead7 60%,
+        #87ceeb 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: iridescent-shimmer 8s ease-in-out infinite;
+}
+
+/* ── Section prompt text — makes each theme's intent clear ── */
+.section-prompt {
+    font-size: 14px;
+    font-weight: 700;
+    color: #6b7280;
+    font-style: italic;
+    line-height: 1.6;
+    max-width: 520px;
+    padding-left: 4px;
+    margin-bottom: 20px;
+}
+
+/* ── Theme divider line ── */
+.theme-divider {
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        rgba(148, 163, 184, 0.25),
+        transparent
+    );
+    margin: 4px 0;
+}
+
+/* ── Caption text — darker for readability ── */
+.caption-text {
+    color: var(--caption);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+}
+
+/* ════════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   ════════════════════════════════════════════════ */
+
+/* ── Dark swirls ── */
+.dark body::before {
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(30, 58, 138, 0.08) 0deg,
+        rgba(76, 29, 149, 0.06) 90deg,
+        rgba(15, 118, 110, 0.08) 180deg,
+        rgba(30, 64, 175, 0.05) 270deg,
+        rgba(30, 58, 138, 0.08) 360deg
+    );
+}
+
+.dark body::after {
+    background:
+        radial-gradient(
+            ellipse at 30% 40%,
+            rgba(99, 102, 241, 0.08) 0%,
+            transparent 50%
+        ),
+        conic-gradient(
+            from 180deg at 70% 60%,
+            rgba(139, 92, 246, 0.05) 0deg,
+            transparent 180deg,
+            rgba(59, 130, 246, 0.05) 360deg
+        );
+}
+
+/* ── Dark mood cards ── */
+.dark .mood-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(148, 163, 184, 0.15) !important;
+}
+
+.dark .mood-card:hover {
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Dark mood badges ── */
+.dark .mood-badge {
+    background: var(--mood-badge-bg);
+    border-color: rgba(148, 163, 184, 0.25);
+}
+
+/* ── Dark nav ── */
+.dark .nav-bar {
+    background: var(--nav-bg) !important;
+    border-color: rgba(148, 163, 184, 0.1) !important;
+}
+
+/* ── Dark blobs ── stay vivid but adjust for dark bg */
+.dark .blob-1 {
+    background: radial-gradient(
+        circle at 35% 40%,
+        rgba(147, 51, 234, 0.85) 0%,
+        rgba(147, 51, 234, 0.75) 35%,
+        rgba(168, 85, 247, 0.55) 50%,
+        rgba(192, 132, 252, 0.25) 65%,
+        transparent 80%
+    );
+    filter: blur(48px);
+}
+.dark .blob-2 {
+    background: radial-gradient(
+        circle at 45% 30%,
+        rgba(34, 197, 94, 0.8) 0%,
+        rgba(74, 222, 128, 0.65) 35%,
+        rgba(134, 239, 172, 0.4) 50%,
+        transparent 78%
+    );
+    filter: blur(44px);
+}
+.dark .blob-3 {
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            rgba(14, 165, 233, 0.85) 0%,
+            rgba(56, 189, 248, 0.7) 35%,
+            rgba(125, 211, 252, 0.35) 50%,
+            transparent 78%
+        ),
+        radial-gradient(
+            circle at 60% 65%,
+            rgba(2, 132, 199, 0.25) 0%,
+            transparent 45%
+        );
+    filter: blur(50px);
+}
+.dark .blob-4 {
+    background: radial-gradient(
+        circle at 40% 35%,
+        rgba(100, 116, 139, 0.75) 0%,
+        rgba(148, 163, 184, 0.5) 35%,
+        rgba(203, 213, 225, 0.2) 50%,
+        transparent 80%
+    );
+    filter: blur(38px);
+}
+.dark .blob-5 {
+    background:
+        radial-gradient(
+            circle at 40% 30%,
+            rgba(139, 92, 246, 0.85) 0%,
+            rgba(167, 139, 250, 0.65) 35%,
+            rgba(99, 102, 241, 0.3) 50%,
+            transparent 80%
+        ),
+        radial-gradient(
+            circle at 55% 60%,
+            rgba(99, 102, 241, 0.25) 0%,
+            transparent 45%
+        );
+    filter: blur(48px);
+}
+
+/* ── Dark compose page ── */
+.dark .compose-card {
+    background: rgba(30, 41, 59, 0.75) !important;
+    border-color: rgba(148, 163, 184, 0.12) !important;
+    backdrop-filter: blur(16px);
+}
+
+.dark .compose-textarea {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border-color: rgba(148, 163, 184, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+.dark .compose-textarea:focus-within {
+    border-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+.dark .upload-zone {
+    border-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+.dark .upload-zone:hover {
+    border-color: rgba(148, 163, 184, 0.35) !important;
+    background: rgba(30, 41, 59, 0.5) !important;
+}
+
+/* ── Dark comment input ── */
+.dark .comment-input {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border-color: rgba(148, 163, 184, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+.dark .comment-input:focus {
+    border-color: rgba(148, 163, 184, 0.35) !important;
+    background: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* ── Dark scrollbar ── */
+.dark ::-webkit-scrollbar-track {
+    background: #0a0e1a;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.45);
+}
+
+/* ── Dark theme divider ── */
+.dark .theme-divider {
+    background: linear-gradient(
+        to right,
+        rgba(148, 163, 184, 0.15),
+        transparent
+    );
+}
+
+/* ── Dark section prompt ── */
+.dark .section-prompt {
+    color: #94a3b8;
+}
+
+/* ── Dark photo stack items ── */
+.dark .photo-stack__item {
+    border-color: rgba(30, 41, 59, 0.9);
+}
+
+/* ── Dark limited edition badge ── */
+.dark .limited-badge {
+    background: rgba(76, 29, 149, 0.3) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+/* ════════════════════════════════════════════════
+   SCROLLBAR
+   ════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f0f8ff;
+}
+::-webkit-scrollbar-thumb {
+    background: #c3b1e180;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #c3b1e1b0;
+}
