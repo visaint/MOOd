@@ -79,7 +79,7 @@ function PostCard({ post }: { post: Post }) {
 
   return (
     <div
-      className={`group flex flex-col bg-white/80 backdrop-blur-sm rounded-[24px] overflow-clip border mood-card mood-${post.moodId}`}
+      className={`group flex flex-col bg-white/80 dark:bg-slate-800/70 backdrop-blur-sm rounded-[24px] overflow-clip border mood-card mood-${post.moodId}`}
       style={{
         borderColor: "var(--mood-border, #e2e8f0)",
       }}
@@ -112,13 +112,13 @@ function PostCard({ post }: { post: Post }) {
         {/* Author row */}
         <div className="flex items-center gap-2">
           <div
-            className={`size-[30px] shrink-0 rounded-full border-2 border-white/80 bg-gradient-to-br ${post.authorColor}`}
+            className={`size-[30px] shrink-0 rounded-full border-2 border-white/80 dark:border-slate-700/80 bg-gradient-to-br ${post.authorColor}`}
           />
           <div className="flex flex-col leading-tight">
-            <span className="text-sky-700 text-sm font-black">
+            <span className="text-sky-700 dark:text-sky-300 text-sm font-black">
               {post.authorName}
             </span>
-            <span className="text-slate-500 text-[11px] font-semibold">
+            <span className="text-slate-500 dark:text-slate-400 text-[11px] font-semibold">
               {timeAgo(post.timestamp)}
             </span>
           </div>
@@ -139,8 +139,8 @@ function PostCard({ post }: { post: Post }) {
             onClick={handleLike}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               liked
-                ? "text-rose-500 bg-rose-50/60"
-                : "text-sky-400 hover:text-rose-400 hover:bg-rose-50/30"
+                ? "text-rose-500 bg-rose-50/60 dark:bg-rose-900/30"
+                : "text-sky-400 hover:text-rose-400 hover:bg-rose-50/30 dark:hover:bg-rose-900/20"
             }`}
           >
             <svg
@@ -162,8 +162,8 @@ function PostCard({ post }: { post: Post }) {
             onClick={() => setShowAllComments(!showAllComments)}
             className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all cursor-pointer text-base ${
               showAllComments
-                ? "text-purple-500 bg-purple-50/60"
-                : "text-purple-400 hover:text-purple-500 hover:bg-purple-50/30"
+                ? "text-purple-500 bg-purple-50/60 dark:bg-purple-900/30"
+                : "text-purple-400 hover:text-purple-500 hover:bg-purple-50/30 dark:hover:bg-purple-900/20"
             }`}
           >
             <svg
@@ -183,17 +183,17 @@ function PostCard({ post }: { post: Post }) {
           </button>
 
           {isOwner && (
-            <span className="ml-auto text-[10px] font-black text-slate-300 italic">
+            <span className="ml-auto text-[10px] font-black text-slate-300 dark:text-slate-500 italic">
               you
             </span>
           )}
         </div>
 
         {/* ── Comments section — always shows preview ── */}
-        <div className="flex flex-col gap-2.5 pt-3 border-t border-sky-100">
+        <div className="flex flex-col gap-2.5 pt-3 border-t border-sky-100 dark:border-slate-700/50">
           {/* No comments yet */}
           {allComments.length === 0 && (
-            <p className="text-slate-500 text-xs font-semibold italic">
+            <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold italic">
               No moos yet. Be the first.
             </p>
           )}
@@ -206,14 +206,14 @@ function PostCard({ post }: { post: Post }) {
               />
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-purple-600 font-black text-xs">
+                  <span className="text-purple-600 dark:text-purple-400 font-black text-xs">
                     {c.authorName}
                   </span>
-                  <span className="text-slate-500 text-[10px] font-semibold">
+                  <span className="text-slate-500 dark:text-slate-400 text-[10px] font-semibold">
                     {timeAgo(c.timestamp)}
                   </span>
                 </div>
-                <span className="text-slate-700 font-semibold text-xs">
+                <span className="text-slate-700 dark:text-slate-300 font-semibold text-xs">
                   {c.text}
                 </span>
               </div>
@@ -224,7 +224,7 @@ function PostCard({ post }: { post: Post }) {
           {hasMore && (
             <button
               onClick={() => setShowAllComments(!showAllComments)}
-              className="self-start text-purple-400 hover:text-purple-500 text-xs font-black tracking-wide uppercase transition-colors cursor-pointer"
+              className="self-start text-purple-400 hover:text-purple-500 dark:text-purple-400 dark:hover:text-purple-300 text-xs font-black tracking-wide uppercase transition-colors cursor-pointer"
             >
               {showAllComments
                 ? `▲ hide`
@@ -240,7 +240,7 @@ function PostCard({ post }: { post: Post }) {
               onChange={(e) => setCommentText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleComment()}
               placeholder="Add a moo…"
-              className="flex-1 bg-white/70 rounded-full px-3.5 py-2 text-xs font-semibold text-slate-700 placeholder:text-slate-300 border border-sky-200 outline-none focus:border-sky-400 focus:bg-white transition-colors"
+              className="comment-input flex-1 bg-white/70 dark:bg-slate-800/60 rounded-full px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-500 border border-sky-200 dark:border-slate-600/50 outline-none focus:border-sky-400 dark:focus:border-sky-500 focus:bg-white dark:focus:bg-slate-800/80 transition-colors"
             />
             <button
               onClick={handleComment}
@@ -328,7 +328,7 @@ export default function GalleryPage() {
     specialSections.length > 0;
 
   return (
-    <div className="relative w-full min-h-screen bg-[#f0f8ff] overflow-clip">
+    <div className="relative w-full min-h-screen bg-[#f0f8ff] dark:bg-[#0a0e1a] overflow-clip transition-colors">
       <BackgroundBlobs />
 
       <div className="relative z-10 w-full max-w-[1200px] mx-auto px-6 pt-0 pb-24">
@@ -336,7 +336,7 @@ export default function GalleryPage() {
 
         {/* ── Today's Theme Hero ── */}
         <div className="flex flex-col items-center text-center pt-8 pb-6 gap-4">
-          <div className="inline-flex items-center bg-white/50 backdrop-blur-sm rounded-full px-4 py-1.5 gap-2 border border-white/50 shadow-sm">
+          <div className="inline-flex items-center bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-1.5 gap-2 border border-white/50 dark:border-slate-600/30 shadow-sm">
             <svg
               className="size-[15px] text-sky-400"
               stroke="currentColor"
@@ -352,7 +352,7 @@ export default function GalleryPage() {
               <path d="M4 17v2" />
               <path d="M5 18H3" />
             </svg>
-            <span className="text-purple-500 text-[13px] font-black tracking-[1.3px] uppercase">
+            <span className="text-purple-500 dark:text-purple-400 text-[13px] font-black tracking-[1.3px] uppercase">
               Daily Mood &middot; {dailyMood.mood.label}
             </span>
           </div>
@@ -361,18 +361,18 @@ export default function GalleryPage() {
             {dailyMood.mood.label}
           </h1>
 
-          <p className="text-slate-600 text-[17px] font-bold leading-relaxed max-w-[540px]">
+          <p className="text-slate-600 dark:text-slate-300 text-[17px] font-bold leading-relaxed max-w-[540px]">
             {dailyMood.mood.desc}
           </p>
 
           {/* ── Prompt — personal invitation ── */}
-          <p className="text-slate-500 italic text-sm font-semibold leading-relaxed max-w-[480px] bg-white/50 rounded-2xl px-5 py-3 border border-white/30 shadow-sm">
+          <p className="text-slate-500 dark:text-slate-400 italic text-sm font-semibold leading-relaxed max-w-[480px] bg-white/50 dark:bg-slate-800/50 rounded-2xl px-5 py-3 border border-white/30 dark:border-slate-600/30 shadow-sm">
             {dailyMood.mood.prompt}
           </p>
 
           <Link
             href="/themes"
-            className="inline-flex h-14 items-center rounded-full px-8 gap-2.5 border-[3px] border-white/70 bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_12px_34px_rgba(135,206,235,0.3)] transition-all hover:shadow-[0_16px_40px_rgba(135,206,235,0.4)] hover:scale-[1.02] active:scale-[0.98] no-underline relative overflow-hidden"
+            className="inline-flex h-14 items-center rounded-full px-8 gap-2.5 border-[3px] border-white/70 dark:border-slate-600/50 bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_12px_34px_rgba(135,206,235,0.3)] transition-all hover:shadow-[0_16px_40px_rgba(135,206,235,0.4)] hover:scale-[1.02] active:scale-[0.98] no-underline relative overflow-hidden"
           >
             <div className="absolute inset-0 iridescent rounded-full opacity-25" />
             <svg
@@ -398,9 +398,9 @@ export default function GalleryPage() {
         {specialSections.map(({ mood, posts: moodPosts }) => (
           <section key={mood.id} className={`pt-8 pb-8 mood-${mood.id}`}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200/60 shadow-sm">
+              <div className="limited-badge flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200/60 shadow-sm dark:from-purple-900/30 dark:to-pink-900/30 dark:border-purple-500/30">
                 <svg
-                  className="size-3.5 text-purple-500"
+                  className="size-3.5 text-purple-500 dark:text-purple-400"
                   stroke="currentColor"
                   fill="none"
                   strokeWidth="2.5"
@@ -410,7 +410,7 @@ export default function GalleryPage() {
                 >
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
-                <span className="text-[11px] font-black text-purple-600 uppercase tracking-[1px]">
+                <span className="text-[11px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-[1px]">
                   Limited Edition
                 </span>
               </div>
@@ -418,7 +418,7 @@ export default function GalleryPage() {
                 className="size-2.5 rounded-full shrink-0"
                 style={{ backgroundColor: "var(--mood-accent, #94a3b8)" }}
               />
-              <h2 className="text-slate-600 text-base font-black tracking-[1px] uppercase shrink-0">
+              <h2 className="text-slate-600 dark:text-slate-300 text-base font-black tracking-[1px] uppercase shrink-0">
                 {moodMeta[mood.id]?.icon} {mood.label}
               </h2>
               <div className="theme-divider flex-1" />
@@ -444,7 +444,7 @@ export default function GalleryPage() {
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
               </svg>
             </div>
-            <p className="text-slate-500 text-lg font-bold italic max-w-sm text-center">
+            <p className="text-slate-500 dark:text-slate-400 text-lg font-bold italic max-w-sm text-center">
               No moos yet. The herd is waiting for yours.
             </p>
             <Link
@@ -461,7 +461,7 @@ export default function GalleryPage() {
           <section className="pt-4 pb-8">
             <div className="flex items-center gap-3 mb-3">
               <div className="size-3 rounded-full bg-gradient-to-br from-sky-400 to-purple-400 shadow-[0_0_8px_rgba(135,206,235,0.3)] shrink-0" />
-              <h2 className="text-slate-600 text-lg font-black tracking-[1.5px] uppercase shrink-0">
+              <h2 className="text-slate-600 dark:text-slate-300 text-lg font-black tracking-[1.5px] uppercase shrink-0">
                 Today&rsquo;s {dailyMood.mood.label} Moos
               </h2>
               <div className="theme-divider flex-1" />
@@ -479,7 +479,7 @@ export default function GalleryPage() {
                 className="size-2.5 rounded-full shrink-0"
                 style={{ backgroundColor: "var(--mood-accent, #94a3b8)" }}
               />
-              <h2 className="text-slate-600 text-base font-black tracking-[1px] uppercase shrink-0">
+              <h2 className="text-slate-600 dark:text-slate-300 text-base font-black tracking-[1px] uppercase shrink-0">
                 {moodMeta[mood.id].icon} {mood.label} Moos
               </h2>
               <div className="theme-divider flex-1" />
@@ -491,10 +491,10 @@ export default function GalleryPage() {
 
         {/* Footer — CD reflection detail */}
         <div className="flex flex-col items-center justify-center pt-16 pb-4 gap-3 opacity-40">
-          <div className="size-16 rounded-full bg-gradient-to-br from-sky-300/30 via-purple-300/30 to-green-300/30 relative overflow-hidden">
+          <div className="size-16 rounded-full bg-gradient-to-br from-sky-300/30 via-purple-300/30 to-green-300/30 dark:from-sky-500/20 dark:via-purple-500/20 dark:to-green-500/20 relative overflow-hidden">
             <div className="absolute inset-0 iridescent rounded-full opacity-60" />
           </div>
-          <span className="text-slate-400 text-xs font-black italic tracking-[2px] uppercase">
+          <span className="text-slate-400 dark:text-slate-500 text-xs font-black italic tracking-[2px] uppercase">
             MOOd &mdash; share your daily mood
           </span>
         </div>

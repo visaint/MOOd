@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 
 type BlobPosition = {
   top?: string;
@@ -11,13 +11,12 @@ type BlobPosition = {
 
 /* ── Generate random positions spread across the viewport ── */
 function randomPositions(): BlobPosition[] {
-  /* Each blob gets a different zone so they don't overlap much */
   const zones = [
-    { top: [-20, 5], left: [-15, 8] }, // far top-left
-    { top: [-15, 3], right: [-10, 6] }, // far top-right
-    { top: [30, 48], left: [15, 38] }, // center-left
-    { bottom: [3, 18], right: [2, 18] }, // bottom-right
-    { bottom: [-8, 12], left: [-8, 12] }, // bottom-left
+    { top: [-20, 5], left: [-15, 8] },
+    { top: [-15, 3], right: [-10, 6] },
+    { top: [30, 48], left: [15, 38] },
+    { bottom: [3, 18], right: [2, 18] },
+    { bottom: [-8, 12], left: [-8, 12] },
   ];
 
   return zones.map((zone) => {
@@ -47,12 +46,17 @@ function randomPositions(): BlobPosition[] {
 const blobClasses = ["blob-1", "blob-2", "blob-3", "blob-4", "blob-5"];
 
 export default function BackgroundBlobs() {
-  const positions = useMemo(() => randomPositions(), []);
+  /* Defer random positions to client-side to avoid hydration mismatch */
+  const [positions, setPositions] = useState<BlobPosition[] | null>(null);
+
+  useEffect(() => {
+    setPositions(randomPositions());
+  }, []);
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {blobClasses.map((cls, i) => (
-        <div key={cls} className={`blob ${cls}`} style={positions[i]} />
+        <div key={cls} className={`blob ${cls}`} style={positions?.[i] ?? {}} />
       ))}
     </div>
   );

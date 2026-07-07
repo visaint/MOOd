@@ -64,7 +64,7 @@ export default function ThemePostPage() {
 
   return (
     <div
-      className="relative w-full min-h-screen bg-[#f0f8ff] overflow-clip"
+      className="relative w-full min-h-screen bg-[#f0f8ff] dark:bg-[#0a0e1a] overflow-clip transition-colors"
       onPaste={handlePaste}
     >
       <BackgroundBlobs />
@@ -74,7 +74,7 @@ export default function ThemePostPage() {
 
         {/* ── Header ── */}
         <div className="flex flex-col items-center text-center pt-8 pb-8 gap-4">
-          <div className="inline-flex items-center bg-white/50 backdrop-blur-sm rounded-full px-4 py-1.5 gap-2 border border-white/50 shadow-sm">
+          <div className="inline-flex items-center bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-1.5 gap-2 border border-white/50 dark:border-slate-600/30 shadow-sm">
             <svg
               className="size-[15px] text-sky-400"
               stroke="currentColor"
@@ -90,7 +90,7 @@ export default function ThemePostPage() {
               <path d="M4 17v2" />
               <path d="M5 18H3" />
             </svg>
-            <span className="text-purple-500 text-[13px] font-black tracking-[1.3px] uppercase">
+            <span className="text-purple-500 dark:text-purple-400 text-[13px] font-black tracking-[1.3px] uppercase">
               Today&rsquo;s mood &middot; {dailyMood.mood.label}
             </span>
           </div>
@@ -99,26 +99,26 @@ export default function ThemePostPage() {
             Post your {dailyMood.mood.label} mood
           </h1>
 
-          <p className="text-slate-600 text-[17px] font-bold leading-relaxed max-w-[540px]">
+          <p className="text-slate-600 dark:text-slate-300 text-[17px] font-bold leading-relaxed max-w-[540px]">
             {dailyMood.mood.desc}
           </p>
         </div>
 
         {/* ── Composer ── */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] p-8 border border-white/50 shadow-[0_8px_32px_rgba(135,206,235,0.06)] grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="compose-card bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl rounded-[32px] p-8 border border-white/50 dark:border-slate-600/30 shadow-[0_8px_32px_rgba(135,206,235,0.06)] grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* ── Left: Image upload ── */}
           <div className="flex flex-col gap-4">
-            <div className="text-sky-500 text-[15px] font-black tracking-[1.5px] uppercase">
+            <div className="text-sky-500 dark:text-sky-400 text-[15px] font-black tracking-[1.5px] uppercase">
               1 &middot; Drop your image
             </div>
             <div
               onDrop={handleDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={() => fileInputRef.current?.click()}
-              className={`flex flex-1 min-h-[320px] flex-col justify-center items-center border-dashed rounded-3xl gap-4 border-[3px] transition-all cursor-pointer ${
+              className={`upload-zone flex flex-1 min-h-[320px] flex-col justify-center items-center border-dashed rounded-3xl gap-4 border-[3px] transition-all cursor-pointer ${
                 imageData
-                  ? "border-green-300 bg-green-50/30"
-                  : "border-purple-300/50 bg-gradient-to-br from-green-50/50 to-purple-50/50 hover:border-purple-400/70 hover:bg-white/50"
+                  ? "border-green-300 dark:border-green-600/50 bg-green-50/30 dark:bg-green-900/20"
+                  : "border-purple-300/50 dark:border-purple-500/30 bg-gradient-to-br from-green-50/50 to-purple-50/50 dark:from-green-900/10 dark:to-purple-900/10 hover:border-purple-400/70 hover:bg-white/50 dark:hover:bg-slate-800/50"
               }`}
             >
               {imageData ? (
@@ -134,7 +134,7 @@ export default function ThemePostPage() {
                       e.stopPropagation();
                       setImageData(null);
                     }}
-                    className="mt-3 text-xs font-black text-rose-500 bg-white/80 rounded-full px-4 py-1.5 border border-rose-200 hover:bg-rose-50 transition-colors"
+                    className="mt-3 text-xs font-black text-rose-500 bg-white/80 dark:bg-slate-800/80 rounded-full px-4 py-1.5 border border-rose-200 dark:border-rose-800/50 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-colors"
                   >
                     Remove &amp; choose another
                   </button>
@@ -158,18 +158,18 @@ export default function ThemePostPage() {
                       <polyline points="16 16 12 12 8 16" />
                     </svg>
                   </div>
-                  <span className="text-purple-500 text-xl font-black italic">
+                  <span className="text-purple-500 dark:text-purple-400 text-xl font-black italic">
                     Drag a photo here
                   </span>
-                  <span className="text-slate-500 text-[13px] font-bold">
+                  <span className="text-slate-500 dark:text-slate-400 text-[13px] font-bold">
                     or click to browse &middot; JPG, PNG up to 10 MB
                   </span>
-                  <span className="text-slate-400 text-[11px] font-semibold">
+                  <span className="text-slate-400 dark:text-slate-500 text-[11px] font-semibold">
                     You can also paste from clipboard
                   </span>
-                  <div className="flex items-center bg-white/80 rounded-full px-6 py-2.5 gap-2 border-2 border-green-300 transition-all hover:border-green-400 hover:bg-white cursor-pointer">
+                  <div className="flex items-center bg-white/80 dark:bg-slate-800/80 rounded-full px-6 py-2.5 gap-2 border-2 border-green-300 dark:border-green-600/50 transition-all hover:border-green-400 hover:bg-white dark:hover:bg-slate-700/80 cursor-pointer">
                     <svg
-                      className="size-4 text-green-500"
+                      className="size-4 text-green-500 dark:text-green-400"
                       stroke="currentColor"
                       fill="none"
                       strokeWidth="2"
@@ -181,7 +181,7 @@ export default function ThemePostPage() {
                       <circle cx="8.5" cy="8.5" r="1.5" />
                       <polyline points="21 15 16 10 5 21" />
                     </svg>
-                    <span className="text-green-600 text-sm font-black">
+                    <span className="text-green-600 dark:text-green-400 text-sm font-black">
                       Choose file
                     </span>
                   </div>
@@ -203,21 +203,21 @@ export default function ThemePostPage() {
           {/* ── Right: Caption & submit ── */}
           <div className="flex flex-col gap-4">
             {/* Caption */}
-            <div className="text-purple-500 text-[15px] font-black tracking-[1.5px] uppercase">
+            <div className="text-purple-500 dark:text-purple-400 text-[15px] font-black tracking-[1.5px] uppercase">
               2 &middot; Say your moo
             </div>
-            <div className="flex flex-col min-h-[180px] bg-white/80 rounded-3xl p-5 gap-2 border-2 border-sky-200/70 transition-all focus-within:border-sky-300 cursor-text">
-              <span className="text-purple-400 text-xs font-black tracking-[1.2px] uppercase">
+            <div className="compose-textarea flex flex-col min-h-[180px] bg-white/80 dark:bg-slate-800/60 rounded-3xl p-5 gap-2 border-2 border-sky-200/70 dark:border-slate-600/40 transition-all focus-within:border-sky-300 dark:focus-within:border-sky-500/50 cursor-text">
+              <span className="text-purple-400 dark:text-purple-400 text-xs font-black tracking-[1.2px] uppercase">
                 Caption
               </span>
               <textarea
                 value={caption}
                 onChange={(e) => setCaption(e.target.value.slice(0, charLimit))}
                 placeholder="how does today feel? keep it soft, keep it real…"
-                className="w-full flex-1 bg-transparent text-slate-600 text-base font-bold placeholder:text-slate-300 resize-none border-none outline-none focus:ring-0"
+                className="w-full flex-1 bg-transparent text-slate-600 dark:text-slate-200 text-base font-bold placeholder:text-slate-300 dark:placeholder:text-slate-500 resize-none border-none outline-none focus:ring-0"
                 rows={3}
               />
-              <span className="mt-auto text-purple-300 text-xs font-black self-end">
+              <span className="mt-auto text-purple-300 dark:text-purple-400 text-xs font-black self-end">
                 {caption.length} / {charLimit}
               </span>
             </div>
@@ -228,9 +228,11 @@ export default function ThemePostPage() {
                 <div
                   className={`size-5 rounded-full bg-gradient-to-br ${user.color}`}
                 />
-                <span className="text-slate-400 text-xs font-semibold">
+                <span className="text-slate-400 dark:text-slate-500 text-xs font-semibold">
                   Posting as{" "}
-                  <span className="text-sky-500 font-black">{user.name}</span>
+                  <span className="text-sky-500 dark:text-sky-400 font-black">
+                    {user.name}
+                  </span>
                 </span>
               </div>
               <div className="inline-flex items-center gap-1.5 mood-badge">
@@ -245,7 +247,7 @@ export default function ThemePostPage() {
             <button
               onClick={handleSubmit}
               disabled={posting}
-              className="flex h-[60px] justify-center items-center mt-auto rounded-full gap-2.5 border-[3px] border-white/70 bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_12px_30px_rgba(135,206,235,0.25)] transition-all hover:shadow-[0_16px_36px_rgba(135,206,235,0.35)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer relative overflow-hidden"
+              className="flex h-[60px] justify-center items-center mt-auto rounded-full gap-2.5 border-[3px] border-white/70 dark:border-slate-600/50 bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_12px_30px_rgba(135,206,235,0.25)] transition-all hover:shadow-[0_16px_36px_rgba(135,206,235,0.35)] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer relative overflow-hidden"
             >
               <div className="absolute inset-0 iridescent rounded-full opacity-25" />
               <svg

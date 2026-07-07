@@ -1,19 +1,23 @@
+"use client";
+
 import Link from "next/link";
+import { useDarkMode } from "@/lib/DarkModeContext";
 
 type NavBarProps = {
   active: "feed" | "themes";
 };
 
 export default function NavBar({ active }: NavBarProps) {
+  const { isDark, toggleDark } = useDarkMode();
+
   return (
-    <div className="flex relative h-[76px] shrink-0 items-center z-[2] mt-6 mb-0 bg-white/60 shadow-[0_4px_24px_rgba(135,206,235,0.08)] backdrop-blur-xl rounded-[26px] px-6 py-0 mx-0 gap-4 border border-white/40">
+    <div className="nav-bar flex relative h-[76px] shrink-0 items-center z-[2] mt-6 mb-0 bg-white/60 shadow-[0_4px_24px_rgba(135,206,235,0.08)] backdrop-blur-xl rounded-[26px] px-6 py-0 mx-0 gap-4 border border-white/40 transition-colors">
       {/* Logo */}
       <Link
         href="/"
         className="flex shrink-0 items-center gap-2.5 no-underline"
       >
         <div className="size-[46px] flex justify-center items-center rounded-full bg-gradient-to-br from-sky-300 via-purple-300 to-green-300 shadow-[0_4px_14px_rgba(135,206,235,0.3)] relative overflow-hidden">
-          {/* CD reflection overlay */}
           <div className="absolute inset-0 iridescent rounded-full opacity-60" />
           <svg
             className="size-[26px] text-white relative z-[1] drop-shadow-sm"
@@ -34,8 +38,8 @@ export default function NavBar({ active }: NavBarProps) {
           href="/"
           className={`flex items-center text-[15px] gap-1.5 no-underline transition-all hover:opacity-80 ${
             active === "feed"
-              ? "text-sky-600 font-black underline decoration-green-400 decoration-[3px] underline-offset-4"
-              : "text-sky-500 font-bold"
+              ? "text-sky-600 dark:text-sky-400 font-black underline decoration-green-400 decoration-[3px] underline-offset-4"
+              : "text-sky-500 dark:text-sky-400 font-bold"
           }`}
         >
           <svg
@@ -56,8 +60,8 @@ export default function NavBar({ active }: NavBarProps) {
           href="/themes"
           className={`flex items-center text-[15px] gap-1.5 no-underline transition-all hover:opacity-80 ${
             active === "themes"
-              ? "text-purple-600 font-black underline decoration-green-400 decoration-[3px] underline-offset-4"
-              : "text-purple-500 font-bold"
+              ? "text-purple-600 dark:text-purple-400 font-black underline decoration-green-400 decoration-[3px] underline-offset-4"
+              : "text-purple-500 dark:text-purple-400 font-bold"
           }`}
         >
           <svg
@@ -76,9 +80,36 @@ export default function NavBar({ active }: NavBarProps) {
         </Link>
       </div>
 
+      {/* Dark mode toggle */}
+      <button
+        onClick={toggleDark}
+        className="flex size-[46px] shrink-0 items-center justify-center rounded-full border border-white/40 dark:border-slate-600/50 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm shadow-sm transition-all hover:scale-[1.08] active:scale-[0.95] cursor-pointer"
+        aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {isDark ? (
+          /* Sun — click to switch to light */
+          <svg
+            className="size-5 text-amber-400"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1zm0 15a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm8.66-10.34a1 1 0 0 1 0 1.41l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 0zM6.34 18.34a1 1 0 0 1 0-1.41l.7-.7a1 1 0 1 1 1.41 1.41l-.7.7a1 1 0 0 1-1.41 0zM21 12a1 1 0 0 1-1 1H4a1 1 0 1 1 0-2h16a1 1 0 0 1 1 1zM5.66 5.66a1 1 0 0 1 1.41 0l.7.7a1 1 0 0 1-1.41 1.41l-.7-.7a1 1 0 0 1 0-1.41zm14.68 14.68a1 1 0 0 1-1.41 0l-.7-.7a1 1 0 1 1 1.41-1.41l.7.7a1 1 0 0 1 0 1.41z" />
+          </svg>
+        ) : (
+          /* Moon — click to switch to dark */
+          <svg
+            className="size-5 text-indigo-400"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21.752 15.002A9.718 9.718 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998z" />
+          </svg>
+        )}
+      </button>
+
       <Link
         href="/themes"
-        className="flex h-[46px] shrink-0 items-center rounded-full px-5 gap-2 border border-white/70 no-underline bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_6px_18px_rgba(135,206,235,0.25)] transition-all hover:shadow-[0_8px_24px_rgba(135,206,235,0.35)] hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden"
+        className="flex h-[46px] shrink-0 items-center rounded-full px-5 gap-2 border border-white/70 dark:border-slate-600/50 no-underline bg-gradient-to-r from-sky-400 to-purple-400 shadow-[0_6px_18px_rgba(135,206,235,0.25)] transition-all hover:shadow-[0_8px_24px_rgba(135,206,235,0.35)] hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden"
       >
         <div className="absolute inset-0 iridescent rounded-full opacity-30" />
         <span className="text-white text-[15px] font-black relative z-[1]">
